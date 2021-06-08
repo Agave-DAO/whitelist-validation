@@ -6,9 +6,13 @@ import { useWeb3React } from '@web3-react/core';
 
 import {
   Container,
-  Navbar
+  Navbar,
+  Tabs,
+  Tab
 } from 'react-bootstrap'
-import WhitelistSelector from './components/WhitelistSelector';
+
+import WhitelistSigning from './components/WhitelistSigning';
+import WhitelistCreation from './components/WhitelistCreation';
 
 function App() {
   const { activate } = useWeb3React()
@@ -24,7 +28,14 @@ function App() {
         </Navbar.Brand>
       </Navbar>
       <Container>
-        <WhitelistSelector />
+        <Tabs defaultActiveKey="sign">
+          <Tab eventKey="sign" title="Sign">
+            <WhitelistSigning />
+          </Tab>
+          <Tab eventKey="register" title="Register NFT">
+            <WhitelistCreation />
+          </Tab>
+        </Tabs>
       </Container>
     </>
   );

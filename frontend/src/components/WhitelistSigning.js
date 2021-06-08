@@ -3,7 +3,7 @@ import axios from 'axios'
 
 import NFTCard from './NFTCard'
 
-export default function WhitelistSelector() {
+export default function WhitelistSigning() {
     const [NFTs, setNFTs] = React.useState([])
 
     React.useEffect(() => {
