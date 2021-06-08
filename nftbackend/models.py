@@ -1,5 +1,6 @@
-from django.db import models
-from django.conf import settings
+from django.db import models, transaction
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class NFT(models.Model):
@@ -33,11 +34,27 @@ class Signature(models.Model):
     def __str__(self):
         return f"Signature from <{self.signer.address}> on {self.whitelist}"
 
+    class Meta:
+        unique_together = (
+            'signer',
+            'whitelist'
+        )
+
 
 class Claimant(models.Model):
     whitelist = models.ForeignKey("Whitelist", on_delete=models.CASCADE)
     address = models.CharField(max_length=100)
     has_claimed = models.BooleanField(default=False)
+
+    @property
+    def can_claim(self):
+        return self.whitelist.signature_set.count() > Signer.objects.count() * 3 / 4
+
+    class Meta:
+        unique_together = (
+            'whitelist',
+            'address'
+        )
 
 
 class Signer(models.Model):
@@ -45,3 +62,14 @@ class Signer(models.Model):
 
     def __str__(self):
         return f"Signer <{self.address}>"
+
+
+@receiver(post_save, sender=Whitelist)
+@transaction.atomic
+def create_claimants(sender, instance: Whitelist, **kwargs):
+    for line in instance.whitelist_file:
+        Claimant.objects.create(
+            whitelist=instance,
+            address=line.decode(),
+            has_claimed=False
+        )
