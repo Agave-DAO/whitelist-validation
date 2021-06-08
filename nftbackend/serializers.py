@@ -15,9 +15,14 @@ web3 = Web3()
 
 class WhitelistSerializer(serializers.ModelSerializer):
     def validate_whitelist_file(self, data):
+        claimant_set = set()
         for line in data:
-            if not web3.isAddress(line):
+            if not Web3.isAddress(line.decode('ascii').strip()):
                 raise ValidationError("File contains a line which is not an address")
+            if line in claimant_set:
+                raise ValidationError("File contains duplicate addresses")
+            claimant_set.add(line)
+        return data
     
     class Meta:
         model = Whitelist
