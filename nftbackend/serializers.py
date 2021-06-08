@@ -14,6 +14,11 @@ from .models import (
 web3 = Web3()
 
 class WhitelistSerializer(serializers.ModelSerializer):
+    def validate_whitelist_file(self, data):
+        for line in data:
+            if not web3.isAddress(line):
+                raise ValidationError("File contains a line which is not an address")
+    
     class Meta:
         model = Whitelist
         fields = "__all__"
@@ -30,6 +35,10 @@ class NFTCreationSerializer(serializers.Serializer):
     whitelist = WhitelistSerializer()
     contract_address = serializers.CharField()
     token_id = serializers.IntegerField()
+
+    def validate_contract_address(self, value):
+        if not web3.isAddress(value):
+            raise ValidationError("Invalid address")
 
     def create(self, validated_data):
         whitelist = Whitelist.objects.create(
