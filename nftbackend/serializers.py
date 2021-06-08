@@ -39,6 +39,7 @@ class NFTCreationSerializer(serializers.Serializer):
     def validate_contract_address(self, value):
         if not web3.isAddress(value):
             raise ValidationError("Invalid address")
+        return value
 
     def create(self, validated_data):
         whitelist = Whitelist.objects.create(
