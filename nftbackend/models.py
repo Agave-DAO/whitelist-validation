@@ -6,7 +6,7 @@ from django.dispatch import receiver
 class NFT(models.Model):
     contract_address = models.CharField(max_length=100)
     token_id = models.BigIntegerField()
-    whitelist = models.ForeignKey("Whitelist", on_delete=models.CASCADE)
+    whitelist = models.OneToOneField("Whitelist", on_delete=models.CASCADE)
     
     def __str__(self) -> str:
         return f"NFT {self.token_id} on contract {self.contract_address}"
@@ -23,7 +23,7 @@ class Whitelist(models.Model):
         return len(set(signer.address for signer in signers)) > Signer.objects.count() * 3 / 4
 
     def __str__(self) -> str:
-        return f"Whitelist for NFT {self.nft_set.first()}"
+        return f"Whitelist for NFT {self.nft}"
 
 
 class Signature(models.Model):

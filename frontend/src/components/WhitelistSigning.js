@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 
-import NFTCard from './NFTCard'
+import NFTSignCard from './NFTSignCard'
 
 export default function WhitelistSigning() {
     const [NFTs, setNFTs] = React.useState([])
@@ -14,7 +14,7 @@ export default function WhitelistSigning() {
 
     return (
         <ol>
-            {NFTs.map(nft => <NFTCard nft={nft} key={nft.id}/>)}
+            {NFTs.map(nft => <NFTSignCard nft={nft} key={nft.id}/>)}
         </ol>
     )
 }

@@ -3,7 +3,7 @@ import React from 'react'
 import axios from 'axios'
 import { Card, Button, Alert } from 'react-bootstrap'
 
-export default function NFTCard({nft}) {
+export default function NFTSignCard({nft}) {
     const [ error, setError ] = React.useState("")
     const { library, account } = useWeb3React()
 

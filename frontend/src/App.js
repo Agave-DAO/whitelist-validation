@@ -13,6 +13,7 @@ import {
 
 import WhitelistSigning from './components/WhitelistSigning';
 import WhitelistCreation from './components/WhitelistCreation';
+import NFTClaimList from './components/NFTClaimList';
 
 function App() {
   const { activate } = useWeb3React()
@@ -34,6 +35,9 @@ function App() {
           </Tab>
           <Tab eventKey="register" title="Register NFT">
             <WhitelistCreation />
+          </Tab>
+          <Tab eventKey="claim" title="Claim NFT">
+            <NFTClaimList />
           </Tab>
         </Tabs>
       </Container>

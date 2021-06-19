@@ -97,3 +97,10 @@ class SignatureSerializer(serializers.ModelSerializer):
             'signature',
             'signer'
         )
+
+class ClaimSerializer(serializers.Serializer):
+    address = serializers.CharField()
+
+    def validate_address(self, address):
+        if not web3.isAddress(address):
+            raise ValidationError("Invalid address")
