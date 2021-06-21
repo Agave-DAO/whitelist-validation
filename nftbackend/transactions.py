@@ -67,9 +67,9 @@ def execute_claim(claimant: Claimant) -> str:
     signer : web3.Account = web3.Account.from_mnemonic(settings.ETH_MNEMONIC)
     w3.eth.default_account = signer._address
 
-    import ipdb; ipdb.set_trace()
+    abi = ERC721_TRANSFER_ABI if claimant.whitelist.nft.contract_type == "721" else ERC1155_TRANSFER_ABI
 
-    contract = w3.eth.contract(abi=ERC721_TRANSFER_ABI, address=claimant.whitelist.nft.contract_address)
+    contract = w3.eth.contract(abi=abi, address=claimant.whitelist.nft.contract_address)
     nonce = w3.eth.get_transaction_count(signer._address)
 
     tx = contract.functions.safeTransferFrom(signer._address, claimant.address, claimant.whitelist.nft.token_id).buildTransaction({
@@ -77,4 +77,4 @@ def execute_claim(claimant: Claimant) -> str:
     })
     signed_tx = signer.sign_transaction(tx)
     w3.eth.send_raw_transaction(signed_tx.rawTransaction)
-    return signed_tx.hash
+    return w3.toHex(signed_tx.hash)
