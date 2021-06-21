@@ -9,6 +9,7 @@ import {
 export default function WhitelistCreation() {
     const { library } = useWeb3React()
     const [address, setAddress] = React.useState("")
+    const [contractType, setContractType] = React.useState("")
     const [tokenID, setTokenID] = React.useState(0)
     const [whitelistData, setWhitelistData] = React.useState("")
 
@@ -18,6 +19,7 @@ export default function WhitelistCreation() {
         const whitelistDataFile = new File([whitelistData], "whitelist.txt")
 
         formData.append('contract_address', address)
+        formData.append('contract_type', contractType)
         formData.append('token_id', tokenID)
         formData.append('whitelist.whitelist_file', whitelistDataFile)
 
@@ -33,6 +35,13 @@ export default function WhitelistCreation() {
             <Form.Group controlId="formContractAddress">
                 <Form.Label>Contract address</Form.Label>
                 <Form.Control onChange={evt => setAddress(evt.target.value)}></Form.Control>
+            </Form.Group>
+            <Form.Group controlId="formContractType">
+                <Form.Label>Contract ERC</Form.Label>
+                <Form.Control as="select" onChange={evt => setContractType(evt.target.value)}>
+                    <option>1155</option>
+                    <option>721</option>
+                </Form.Control>
             </Form.Group>
             <Form.Group controlId="formTokenID">
                 <Form.Label>Token ID</Form.Label>

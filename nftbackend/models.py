@@ -4,7 +4,12 @@ from django.dispatch import receiver
 
 
 class NFT(models.Model):
+    CONTRACT_TYPE_CHOICES = {
+        ("1155", "ERC 1155"),
+        ("721", "ERC 721")
+    }
     contract_address = models.CharField(max_length=100)
+    contract_type = models.CharField(max_length=4, choices=CONTRACT_TYPE_CHOICES, default="1155")
     token_id = models.BigIntegerField()
     whitelist = models.OneToOneField("Whitelist", on_delete=models.CASCADE)
     
