@@ -32,7 +32,12 @@ ERC1155_TRANSFER_ABI = [
 				"internalType": "uint256",
 				"name": "_value",
 				"type": "uint256"
-			}
+			},
+			{	
+				"internalType":"bytes",
+				"name":"_data",
+				"type":"bytes",
+			},
 		],
 		"name": "safeTransferFrom",
 		"outputs": [],
@@ -83,7 +88,7 @@ def handle_erc1155_claim(claimant: Claimant):
     nonce = w3.eth.get_transaction_count(signer._address)
 
     # TODO value is hardcoded to 1 unit. we might want to airdop more than one, possibly.
-    tx = contract.functions.safeTransferFrom(signer._address, claimant.address, claimant.whitelist.nft.token_id, 1).buildTransaction({
+    tx = contract.functions.safeTransferFrom(signer._address, claimant.address, claimant.whitelist.nft.token_id, 1, '0x776564716566647165').buildTransaction({
         "nonce": nonce
     })
     return tx
@@ -94,7 +99,7 @@ def execute_claim(claimant: Claimant) -> str:
         raw_transaction = handle_erc721_claim(claimant)
     else:
         raw_transaction = handle_erc1155_claim(claimant)
-
+    print(raw_transaction)
     signed_tx = signer.sign_transaction(raw_transaction)
     w3.eth.send_raw_transaction(signed_tx.rawTransaction)
     return w3.toHex(signed_tx.hash)

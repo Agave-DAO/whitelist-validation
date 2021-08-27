@@ -135,5 +135,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-ETH_RPC_URL = "http://localhost:8545"
-ETH_MNEMONIC = "evolve visual cover teach yellow armed oxygen glory sheriff opinion vanish fashion"
+ETH_RPC_URL = "https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"
+ETH_MNEMONIC = "mammal abstract bounce morning half pluck harsh escape reduce bicycle hockey air"
